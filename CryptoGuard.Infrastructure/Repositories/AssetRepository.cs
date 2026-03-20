@@ -2,6 +2,7 @@
 using CryptoGuard.Application.Interfaces;
 using CryptoGuard.Domain.Domains;
 using CryptoGuard.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CryptoGuard.Infrastructure.Repositories;
 
@@ -23,5 +24,24 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
         await context.SaveChangesAsync(ct);
         
         return assetEntity.Id;
+    }
+
+    public async Task<Asset?> GetAssetBySymbolAsync(string symbol, CancellationToken ct)
+    {
+        var assetEntity = await context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol, ct);
+        if (assetEntity == null)
+        {
+            return null;
+        }
+
+        return new Asset
+        {
+            Id = assetEntity.Id,
+            Symbol = assetEntity.Symbol,
+            Name = assetEntity.Name,
+            Currency = assetEntity.Currency,
+            CurrentPrice = assetEntity.CurrentPrice,
+            LastUpdated = assetEntity.LastUpdated
+        };
     }
 }
