@@ -1,6 +1,6 @@
 namespace CryptoGuard.Infrastructure.Entities;
 
-public class Alert
+public class AlertEntity
 {
     public Guid Id { get; set; }
     public decimal TargetPrice { get; set; }
@@ -8,5 +8,5 @@ public class Alert
     public bool IsTriggered { get; set; }
     public DateTime CreatedAt { get; set; }
     public Guid AssertId { get; set; }
-    public Asset Asset { get; set; } = null!;
+    public AssetEntity AssetEntity { get; set; } = null!;
 }

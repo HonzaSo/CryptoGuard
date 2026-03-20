@@ -9,8 +9,8 @@ public class ApplicationDbContext : DbContext
     {
     }
     
-    public DbSet<Asset> Assets => Set<Asset>();
-    public DbSet<Alert> Alerts => Set<Alert>();
+    public DbSet<AssetEntity> Assets => Set<AssetEntity>();
+    public DbSet<AlertEntity> Alerts => Set<AlertEntity>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
