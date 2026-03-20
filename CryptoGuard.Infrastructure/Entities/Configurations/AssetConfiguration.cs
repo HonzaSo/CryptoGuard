@@ -1,8 +1,7 @@
-using CryptoGuard.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CryptoGuard.Infrastructure.Configurations;
+namespace CryptoGuard.Infrastructure.Entities.Configurations;
 
 public class AssetConfiguration : IEntityTypeConfiguration<Asset>
 {
