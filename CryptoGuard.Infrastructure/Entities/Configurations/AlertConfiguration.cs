@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CryptoGuard.Infrastructure.Entities.Configurations;
 
-public class AlertConfiguration : IEntityTypeConfiguration<Alert>
+public class AlertConfiguration : IEntityTypeConfiguration<AlertEntity>
 {
-    public void Configure(EntityTypeBuilder<Alert> builder)
+    public void Configure(EntityTypeBuilder<AlertEntity> builder)
     {
         builder.HasKey(a => a.Id);
-        builder.HasOne(a => a.Asset)
+        builder.HasOne(a => a.AssetEntity)
             .WithMany(asset => asset.Alerts)
             .HasForeignKey(a => a.AssertId)
             .OnDelete(DeleteBehavior.Cascade);

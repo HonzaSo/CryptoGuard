@@ -1,6 +1,6 @@
 namespace CryptoGuard.Infrastructure.Entities;
 
-public class Asset
+public class AssetEntity
 {
     public Guid Id { get; set; }
     public string Symbol { get; set; }
@@ -8,5 +8,5 @@ public class Asset
     public string Currency { get; set; }
     public decimal CurrentPrice { get; set; }
     public DateTime LastUpdated { get; set; }
-    public ICollection<Alert> Alerts { get; set; } = new List<Alert>();
+    public ICollection<AlertEntity> Alerts { get; set; } = new List<AlertEntity>();
 }

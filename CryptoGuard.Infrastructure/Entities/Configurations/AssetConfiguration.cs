@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CryptoGuard.Infrastructure.Entities.Configurations;
 
-public class AssetConfiguration : IEntityTypeConfiguration<Asset>
+public class AssetConfiguration : IEntityTypeConfiguration<AssetEntity>
 {
-    public void Configure(EntityTypeBuilder<Asset> builder)
+    public void Configure(EntityTypeBuilder<AssetEntity> builder)
     {
         builder.HasKey(a => a.Id);
         builder.Property(a => a.Symbol).IsRequired().HasMaxLength(10);
