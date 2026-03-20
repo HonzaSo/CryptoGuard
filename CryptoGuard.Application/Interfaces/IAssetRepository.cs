@@ -5,4 +5,5 @@ namespace CryptoGuard.Application.Interfaces;
 public interface IAssetRepository
 {
     Task<Guid> CreateAssetAsync(Asset asset, CancellationToken ct);
+    Task<Asset?> GetAssetBySymbolAsync(string symbol, CancellationToken ct);
 }
