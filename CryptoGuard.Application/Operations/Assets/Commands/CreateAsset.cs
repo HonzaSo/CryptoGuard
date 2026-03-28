@@ -1,14 +1,15 @@
 using CryptoGuard.Application.Common.Interfaces;
 using CryptoGuard.Application.Interfaces;
+using CryptoGuard.Domain.Abstractions;
 using CryptoGuard.Domain.Domains;
 
 namespace CryptoGuard.Application.Operations.Assets.Commands;
 
 public record CreateAssetCommand(string Symbol, string Name, string Currency, decimal CurrentPrice);
 
-public class CreateAssetHandler(IAssetRepository assetRepository) : ICommandHandler<CreateAssetCommand, Guid>
+public class CreateAssetHandler(IAssetRepository assetRepository) : ICommandHandler<CreateAssetCommand, Result<Guid>>
 {
-    public async Task<Guid> HandleAsync(CreateAssetCommand command, CancellationToken ct)
+    public async Task<Result<Guid>> HandleAsync(CreateAssetCommand command, CancellationToken ct)
     {
         var asset = new Asset 
         { 
@@ -20,6 +21,7 @@ public class CreateAssetHandler(IAssetRepository assetRepository) : ICommandHand
             LastUpdated = DateTime.UtcNow
         };
 
-        return await assetRepository.CreateAssetAsync(asset, ct);
+        var guid = await assetRepository.CreateAssetAsync(asset, ct);
+        return Result.Success(guid);
     }
 }
