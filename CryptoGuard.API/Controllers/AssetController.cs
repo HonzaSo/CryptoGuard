@@ -1,3 +1,4 @@
+using CryptoGuard.API.Controllers.Requests;
 using CryptoGuard.Application.Common.Interfaces;
 using CryptoGuard.Application.Operations.Assets.Commands;
 using CryptoGuard.Application.Operations.Assets.Queries;
@@ -18,8 +19,9 @@ public class AssetController (
         ) : ControllerBase
 {
     [HttpPost("add-asset")]
-    public async Task<IActionResult> AddAsset([FromBody] CreateAssetCommand command, CancellationToken ct)
+    public async Task<IActionResult> AddAsset([FromBody] CreateAssetRequest request, CancellationToken ct)
     {
+        var command = new CreateAssetCommand(request.Symbol, request.Name, request.Currency, request.CurrentPrice);
         var result = await createHandler.HandleAsync(command, ct);
         
         return result.IsSuccess 
@@ -67,6 +69,3 @@ public class AssetController (
             : NotFound(result.Error);
     }
 }
-
-public record UpdateCurrentPriceByIdRequest(decimal CurrentPrice);
-public record UpdateCurrentPriceBySymbolRequest(decimal CurrentPrice);
