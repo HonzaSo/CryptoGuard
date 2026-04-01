@@ -13,5 +13,8 @@ public static class DependencyInjection
     {
         services.AddScoped<ICommandHandler<CreateAssetCommand, Result<Guid>>, CreateAssetHandler>();
         services.AddScoped<ICommandHandler<GetAssetBySymbolQuery, Result<Asset>>, GetAssetBySymbolHandler>();
+        services.AddScoped<ICommandHandler<RemoveAssetCommand, Result<Unit>>, RemoveAssetHandler>();
+        services.AddScoped<ICommandHandler<UpdateCurrentPriceByIdCommand, Result<Unit>>, UpdateCurrentPriceByIdHandler>();
+        services.AddScoped<ICommandHandler<UpdateCurrentPriceBySymbolCommand, Result<Unit>>, UpdateCurrentPriceBySymbolHandler>();
     }
 }
