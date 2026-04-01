@@ -18,7 +18,8 @@ public class GlobalExceptionHandlingMiddleware(ILogger<GlobalExceptionHandlingMi
             var errorResponse = new
             {
                 Message = "An unexpected error occurred.",
-                Details = ex.Message
+                Details = ex.Message,
+                CorrelationId = context.TraceIdentifier
             };
             
             await context.Response.WriteAsJsonAsync(errorResponse);
