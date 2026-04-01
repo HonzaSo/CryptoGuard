@@ -1,4 +1,3 @@
-
 using CryptoGuard.Application.Interfaces;
 using CryptoGuard.Domain.Domains;
 using CryptoGuard.Infrastructure.Entities;
@@ -13,7 +12,7 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
         var assetEntity = new AssetEntity
         {
             Id = Guid.NewGuid(),
-            Symbol = asset.Symbol,
+            Symbol = asset.Symbol.ToUpper(),
             Name = asset.Name,
             Currency = asset.Currency,
             CurrentPrice = asset.CurrentPrice,
@@ -28,7 +27,7 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
 
     public async Task<Asset?> GetAssetBySymbolAsync(string symbol, CancellationToken ct)
     {
-        var assetEntity = await context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol, ct);
+        var assetEntity = await context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol.ToUpper(), ct);
         if (assetEntity == null)
         {
             return null;
@@ -43,5 +42,45 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
             CurrentPrice = assetEntity.CurrentPrice,
             LastUpdated = assetEntity.LastUpdated
         };
+    }
+
+    public async Task<Asset?> GetAssetByIdAsync(Guid id, CancellationToken ct)
+    {
+        var assetEntity = await context.Assets.FirstOrDefaultAsync(a => a.Id == id, ct);
+        if (assetEntity == null)
+        {
+            return null;
+        }
+
+        return new Asset
+        {
+            Id = assetEntity.Id,
+            Symbol = assetEntity.Symbol,
+            Name = assetEntity.Name,
+            Currency = assetEntity.Currency,
+            CurrentPrice = assetEntity.CurrentPrice,
+            LastUpdated = assetEntity.LastUpdated
+        };
+    }
+
+    public async Task RemoveAssetAsync(Guid id, CancellationToken ct)
+    {
+        var assetEntity = await context.Assets.FirstOrDefaultAsync(a => a.Id == id, ct);
+        if (assetEntity != null)
+        {
+            context.Assets.Remove(assetEntity);
+            await context.SaveChangesAsync(ct);
+        }
+    }
+
+    public async Task UpdateCurrentPriceAsync(Guid id, decimal newPrice, CancellationToken ct)
+    {
+        var assetEntity = await context.Assets.FirstOrDefaultAsync(a => a.Id == id, ct);
+        if (assetEntity != null)
+        {
+            assetEntity.CurrentPrice = newPrice;
+            assetEntity.LastUpdated = DateTime.UtcNow;
+            await context.SaveChangesAsync(ct);
+        }
     }
 }

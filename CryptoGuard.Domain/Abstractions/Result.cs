@@ -29,3 +29,8 @@ public static class Result
 }
 
 public record FailureResult(Error Error);
+
+public readonly struct Unit
+{
+    public static readonly Unit Value = default;
+}
