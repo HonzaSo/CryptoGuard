@@ -3,6 +3,7 @@ using CryptoGuard.Application.Interfaces;
 using CryptoGuard.Domain.Abstractions;
 using CryptoGuard.Domain.Domains;
 
+
 namespace CryptoGuard.Application.Operations.Assets.Queries;
 
 public record GetAssetBySymbolQuery(string Symbol);
