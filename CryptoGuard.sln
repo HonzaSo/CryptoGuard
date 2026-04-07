@@ -20,6 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{5F0B
 		Scripts\docker-down.bat = Scripts\docker-down.bat
 		Scripts\docker-full-up.bat = Scripts\docker-full-up.bat
 		Scripts\docker-infrastructure-up.bat = Scripts\docker-infrastructure-up.bat
+		Scripts\AddMigration.bat = Scripts\AddMigration.bat
+		Scripts\RemoveLastMigration.bat = Scripts\RemoveLastMigration.bat
+		Scripts\EF-UpdateDatabase.bat = Scripts\UpdateDatabase.bat
 	EndProjectSection
 EndProject
 Global
