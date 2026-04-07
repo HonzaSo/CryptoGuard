@@ -5,6 +5,7 @@ using CryptoGuard.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
+builder.Services.AddTransient<LoggingMiddleware>();
 
 builder.Services.AddInfrastructureDi(builder.Configuration);
 builder.Services.AddApplicationDi();
@@ -15,6 +16,7 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllers();
