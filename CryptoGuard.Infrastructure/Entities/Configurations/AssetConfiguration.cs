@@ -12,5 +12,6 @@ public class AssetConfiguration : IEntityTypeConfiguration<AssetEntity>
         builder.Property(a => a.Name).HasMaxLength(100);
         builder.Property(a => a.CurrentPrice).HasColumnType("decimal(18,8)");
         builder.Property(a => a.Currency).IsRequired().HasMaxLength(3);
+        builder.HasIndex(a => a.Symbol).IsUnique();
     }
 }
