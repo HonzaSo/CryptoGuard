@@ -8,7 +8,7 @@ public class Result<T>
     
     private Result(T? value, Error? error)
     {
-        if (value != null && error != null)
+        if (error != null && !EqualityComparer<T>.Default.Equals(value, default!))
         {
             throw new InvalidOperationException("A result cannot have both a value and an error.");
         }
