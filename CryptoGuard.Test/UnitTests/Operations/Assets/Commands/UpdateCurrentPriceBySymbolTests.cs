@@ -22,15 +22,13 @@ public class UpdateCurrentPriceBySymbolTests
     public async Task HandleAsync_ShouldReturnSuccess_WhenAssetExists()
     {
         var assetId = Guid.NewGuid();
-        var asset = new Asset
-        {
-            Id = assetId,
-            Symbol = "BTC",
-            Name = "Bitcoin",
-            Currency = "USD",
-            CurrentPrice = 50000m,
-            LastUpdated = DateTime.UtcNow
-        };
+        var asset = new Asset(
+                assetId,
+                "BTC",
+                "Bitcoin",
+                Currency.Usd,
+                50000m,
+                DateTime.UtcNow);   
 
         _assetRepository.GetAssetBySymbolAsync("BTC", Arg.Any<CancellationToken>())
             .Returns(asset);

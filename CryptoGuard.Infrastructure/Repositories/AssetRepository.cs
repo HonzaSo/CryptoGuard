@@ -33,15 +33,14 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
             return null;
         }
 
-        return new Asset
-        {
-            Id = assetEntity.Id,
-            Symbol = assetEntity.Symbol,
-            Name = assetEntity.Name,
-            Currency = assetEntity.Currency,
-            CurrentPrice = assetEntity.CurrentPrice,
-            LastUpdated = assetEntity.LastUpdated
-        };
+        return new Asset(
+            assetEntity.Id,
+            assetEntity.Symbol,
+            assetEntity.Name,
+            assetEntity.Currency,
+            assetEntity.CurrentPrice,
+            assetEntity.LastUpdated
+        );
     }
 
     public async Task<Asset?> GetAssetByIdAsync(Guid id, CancellationToken ct)
@@ -52,15 +51,14 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
             return null;
         }
 
-        return new Asset
-        {
-            Id = assetEntity.Id,
-            Symbol = assetEntity.Symbol,
-            Name = assetEntity.Name,
-            Currency = assetEntity.Currency,
-            CurrentPrice = assetEntity.CurrentPrice,
-            LastUpdated = assetEntity.LastUpdated
-        };
+        return new Asset(
+            assetEntity.Id,
+            assetEntity.Symbol,
+            assetEntity.Name,
+            assetEntity.Currency,
+            assetEntity.CurrentPrice,
+            assetEntity.LastUpdated
+        );
     }
 
     public async Task RemoveAssetAsync(Guid id, CancellationToken ct)
