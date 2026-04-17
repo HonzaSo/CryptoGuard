@@ -81,4 +81,23 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
             await context.SaveChangesAsync(ct);
         }
     }
+
+    public async Task UpdateAssetAsync(Asset asset, CancellationToken ct)
+    {
+        var existingEntity = await context.Assets
+        .FirstOrDefaultAsync(a => a.Id == asset.Id, ct);
+
+        if (existingEntity == null)
+        {
+            return;
+        }
+
+        existingEntity.Symbol = asset.Symbol;
+        existingEntity.Name = asset.Name;
+        existingEntity.Currency = asset.Currency;
+        existingEntity.CurrentPrice = asset.CurrentPrice;
+        existingEntity.LastUpdated = asset.LastUpdated;
+
+        await context.SaveChangesAsync(ct);
+    }
 }

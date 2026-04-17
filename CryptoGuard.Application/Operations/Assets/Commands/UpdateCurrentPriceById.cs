@@ -1,6 +1,7 @@
 using CryptoGuard.Application.Common.Interfaces;
 using CryptoGuard.Application.Interfaces;
 using CryptoGuard.Domain.Abstractions;
+using CryptoGuard.Domain.Domains;
 
 namespace CryptoGuard.Application.Operations.Assets.Commands;
 
@@ -13,10 +14,17 @@ public class UpdateCurrentPriceByIdHandler(IAssetRepository assetRepository) : I
         var asset = await assetRepository.GetAssetByIdAsync(command.Id, ct);
         if (asset == null)
         {
-            return Result.Failure(new Error("AssetNotFound", $"No asset found with id '{command.Id}'"));
+            return Result.Failure(AssetErrors.AssetNotFound);
         }
-
-        await assetRepository.UpdateCurrentPriceAsync(command.Id, command.CurrentPrice, ct);
+        
+        var result = asset.UpdateCurrentPrice(command.CurrentPrice);
+        
+        if (!result.IsSuccess)
+        {
+            return Result.Failure(result.Error!);
+        }
+        
+        await assetRepository.UpdateAssetAsync(asset, ct);
         return Result.Success(Unit.Value);
     }
 }
