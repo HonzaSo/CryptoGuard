@@ -25,7 +25,7 @@ public class UpdateCurrentPriceByIdTests
         var assetId = Guid.NewGuid();
         var asset = new Asset(
             assetId,
-            "BTC",
+            Symbol.Create("BTC").Value!,
             "Bitcoin",
             Currency.Usd,
             50000m,

@@ -11,18 +11,24 @@ public class CreateAssetHandler(IAssetRepository assetRepository) : ICommandHand
 {
     public async Task<Result<Guid>> HandleAsync(CreateAssetCommand command, CancellationToken ct)
     {
+        var symbolResult = Symbol.Create(command.Symbol);
         var currencyResult = Currency.Create(command.Currency);
     
         if (!currencyResult.IsSuccess)
         {
-            return Result.Failure(currencyResult.Error!);
+            return Result.Failure(currencyResult.Error);
+        }
+        
+        if (!symbolResult.IsSuccess)
+        {
+            return Result.Failure(symbolResult.Error);
         }
         
         var asset = new Asset(
             Guid.NewGuid(),
-            command.Symbol,
+            symbolResult.Value,
             command.Name,
-            currencyResult.Value!,
+            currencyResult.Value,
             command.CurrentPrice,
             DateTime.UtcNow
         );

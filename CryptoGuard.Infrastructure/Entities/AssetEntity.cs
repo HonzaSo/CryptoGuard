@@ -5,7 +5,7 @@ namespace CryptoGuard.Infrastructure.Entities;
 public class AssetEntity
 {
     public Guid Id { get; set; }
-    public string Symbol { get; set; }
+    public Symbol Symbol { get; set; }
     public string Name { get; set; }
     public Currency Currency { get; set; }
     public decimal CurrentPrice { get; set; }
