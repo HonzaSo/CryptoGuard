@@ -12,7 +12,7 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
         var assetEntity = new AssetEntity
         {
             Id = Guid.NewGuid(),
-            Symbol = asset.Symbol.ToUpper(),
+            Symbol = asset.Symbol,
             Name = asset.Name,
             Currency = asset.Currency,
             CurrentPrice = asset.CurrentPrice,
@@ -25,9 +25,9 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
         return assetEntity.Id;
     }
 
-    public async Task<Asset?> GetAssetBySymbolAsync(string symbol, CancellationToken ct)
+    public async Task<Asset?> GetAssetBySymbolAsync(Symbol symbol, CancellationToken ct)
     {
-        var assetEntity = await context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol.ToUpper(), ct);
+        var assetEntity = await context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol, ct);
         if (assetEntity == null)
         {
             return null;

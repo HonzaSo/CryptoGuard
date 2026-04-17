@@ -22,15 +22,16 @@ public class UpdateCurrentPriceBySymbolTests
     public async Task HandleAsync_ShouldReturnSuccess_WhenAssetExists()
     {
         var assetId = Guid.NewGuid();
+        var symbol = Symbol.Create("BTC").Value!;
         var asset = new Asset(
                 assetId,
-                "BTC",
+                symbol,
                 "Bitcoin",
                 Currency.Usd,
                 50000m,
                 DateTime.UtcNow);   
 
-        _assetRepository.GetAssetBySymbolAsync("BTC", Arg.Any<CancellationToken>())
+        _assetRepository.GetAssetBySymbolAsync(symbol, Arg.Any<CancellationToken>())
             .Returns(asset);
         var command = new UpdateCurrentPriceBySymbolCommand("BTC", 55000m);
 
@@ -45,7 +46,7 @@ public class UpdateCurrentPriceBySymbolTests
     public async Task HandleAsync_ShouldReturnFailure_WhenAssetDoesNotExist()
     {
         var command = new UpdateCurrentPriceBySymbolCommand("XYZ", 55000m);
-        _assetRepository.GetAssetBySymbolAsync("XYZ", Arg.Any<CancellationToken>())
+        _assetRepository.GetAssetBySymbolAsync(Symbol.Create("XYZ").Value!, Arg.Any<CancellationToken>())
             .Returns((Asset?)null);
 
         var result = await _handler.HandleAsync(command, CancellationToken.None);

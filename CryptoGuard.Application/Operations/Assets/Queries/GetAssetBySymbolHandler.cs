@@ -12,7 +12,9 @@ public class GetAssetBySymbolHandler (IAssetRepository assetRepository) : IComma
 {
     public async Task<Result<Asset>> HandleAsync(GetAssetBySymbolQuery command, CancellationToken ct)
     {
-        var result = await assetRepository.GetAssetBySymbolAsync(command.Symbol, ct);
+        var symbolResult = Symbol.Create(command.Symbol);
+        var result = await assetRepository.GetAssetBySymbolAsync(symbolResult.Value!, ct);
+        
         
         if (result == null)
         {

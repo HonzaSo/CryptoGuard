@@ -1,9 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace CryptoGuard.Domain.Abstractions;
 
 public class Result<T>
 {
     public T? Value { get; }
     public Error? Error { get; }
+    
+    [MemberNotNullWhen(true, nameof(Value))]
+    [MemberNotNullWhen(false, nameof(Error))]
     public bool IsSuccess => Error == null;
     
     private Result(T? value, Error? error)

@@ -21,15 +21,16 @@ public class GetAssetBySymbolTests
     public async Task HandleAsync_ShouldReturnAsset_WhenAssetExists()
     {
         var assetId = Guid.NewGuid();
+        var symbol = Symbol.Create("BTC").Value!;
         var asset = new Asset(
             assetId,
-            "BTC",
+            symbol,
             "Bitcoin",
             Currency.Usd,
             50000m,
             DateTime.UtcNow);   
 
-        _assetRepository.GetAssetBySymbolAsync("BTC", Arg.Any<CancellationToken>())
+        _assetRepository.GetAssetBySymbolAsync(symbol, Arg.Any<CancellationToken>())
             .Returns(asset);
         var query = new GetAssetBySymbolQuery("BTC");
 

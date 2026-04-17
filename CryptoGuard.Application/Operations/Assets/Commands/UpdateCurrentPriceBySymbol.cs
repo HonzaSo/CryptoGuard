@@ -1,6 +1,7 @@
 using CryptoGuard.Application.Common.Interfaces;
 using CryptoGuard.Application.Interfaces;
 using CryptoGuard.Domain.Abstractions;
+using CryptoGuard.Domain.Domains;
 
 namespace CryptoGuard.Application.Operations.Assets.Commands;
 
@@ -10,7 +11,14 @@ public class UpdateCurrentPriceBySymbolHandler(IAssetRepository assetRepository)
 {
     public async Task<Result<Unit>> HandleAsync(UpdateCurrentPriceBySymbolCommand command, CancellationToken ct)
     {
-        var asset = await assetRepository.GetAssetBySymbolAsync(command.Symbol, ct);
+        var symbolResult = Symbol.Create(command.Symbol);
+        
+        if (!symbolResult.IsSuccess)
+        {
+            return Result.Failure(symbolResult.Error);
+        }
+        
+        var asset = await assetRepository.GetAssetBySymbolAsync(symbolResult.Value!, ct);
         if (asset == null)
         {
             return Result.Failure(new Error("AssetNotFound", $"No asset found with symbol '{command.Symbol}'"));
