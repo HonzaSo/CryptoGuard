@@ -1,5 +1,6 @@
 using CryptoGuard.Application.Interfaces;
 using CryptoGuard.Application.Operations.Assets.Commands;
+using CryptoGuard.Domain.Domains;
 using FluentAssertions;
 using NSubstitute;
 
@@ -21,7 +22,7 @@ public class CreateAssetTests
     public async Task HandleAsync_ShouldReturnGuid_WhenCommandIsValid()
     {
         var assetId = Guid.NewGuid();
-        _assetRepository.CreateAssetAsync(Arg.Any<Domain.Domains.Asset>(), Arg.Any<CancellationToken>())
+        _assetRepository.CreateAssetAsync(Arg.Any<Asset>(), Arg.Any<CancellationToken>())
             .Returns(assetId);
         var command = new CreateAssetCommand("BTC", "Bitcoin", "USD", 50000m);
         
@@ -30,6 +31,6 @@ public class CreateAssetTests
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(assetId);
         await _assetRepository.Received(1)
-            .CreateAssetAsync(Arg.Any<Domain.Domains.Asset>(), Arg.Any<CancellationToken>());
+            .CreateAssetAsync(Arg.Any<Asset>(), Arg.Any<CancellationToken>());
     }
 }
