@@ -10,16 +10,21 @@ public record Symbol
     
     public static Result<Symbol> Create(string value)
     {
+        value = value.Trim();
+        
         if (string.IsNullOrWhiteSpace(value))
         {
-            return Result.Failure(new Error("Symbol.Invalid", "Symbol cannot be empty."));
+            return Result.Failure(new Error("Symbol.Invalid", "Symbol nemůže být prázdný."));
         }
         
         if (value.Length != 3)
         {
-            return Result.Failure(new Error("Symbol.Invalid", "Symbol must be exactly 3 characters long."));
+            return Result.Failure(new Error("Symbol.Invalid", "Symbol musí mít přesně 3 charaktery."));
         }
 
         return Result.Success(new Symbol(value.ToUpper()));
     }
+    
+    public static readonly Symbol Btc = new("BTC");
+    public static readonly Symbol Eth = new("ETH");
 }

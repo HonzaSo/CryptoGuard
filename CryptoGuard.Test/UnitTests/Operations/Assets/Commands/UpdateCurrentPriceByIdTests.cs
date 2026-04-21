@@ -53,7 +53,7 @@ public class UpdateCurrentPriceByIdTests
         var result = await _handler.HandleAsync(command, CancellationToken.None);
 
         result.IsSuccess.Should().BeFalse();
-        result.Error?.Code.Should().Be("AssetNotFound");
+        result.Error?.Code.Should().Be("Asset.NotFound");
     }
 }
 
