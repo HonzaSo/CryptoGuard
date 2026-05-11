@@ -1,6 +1,7 @@
 using CryptoGuard.API.Middlewares;
 using CryptoGuard.Application;
 using CryptoGuard.Infrastructure;
+using CryptoGuard.Infrastructure.BackgroundJobs;
 using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,8 +21,12 @@ var app = builder.Build();
 app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
-app.UseHangfireServer();
 app.UseHangfireDashboard();
+
+RecurringJob.AddOrUpdate<UpdatePricesJob>(
+    "UpdatePricesJob",
+    job => job.ExecuteAsync(),
+    Cron.Minutely);
 
 if (app.Environment.IsDevelopment())
 {

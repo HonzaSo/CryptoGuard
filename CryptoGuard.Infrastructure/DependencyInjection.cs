@@ -1,4 +1,5 @@
 using CryptoGuard.Application.Interfaces;
+using CryptoGuard.Infrastructure.BackgroundJobs;
 using CryptoGuard.Infrastructure.Configurations;
 using CryptoGuard.Infrastructure.Providers;
 using CryptoGuard.Infrastructure.Repositories;
@@ -30,6 +31,7 @@ public static class DependencyInjection
                                ?? throw new InvalidOperationException("CoinGeckoOptions section is missing.");
 
         services.AddSingleton(Options.Create(coingeckoOptions));
+        services.AddScoped<UpdatePricesJob>();
 
         services.AddHttpClient<IPriceProvider, CoinGeckoPriceProvider>((serviceProvider, client) =>
         {
@@ -38,6 +40,8 @@ public static class DependencyInjection
             client.BaseAddress = new Uri(options.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(options.TimeoutInSeconds);
         
+            client.DefaultRequestHeaders.Add("User-Agent", "CryptoGuardApp/1.0");
+            
             if (!string.IsNullOrEmpty(options.ApiKey))
             {
                 client.DefaultRequestHeaders.Add("x-cg-demo-api-key", options.ApiKey);

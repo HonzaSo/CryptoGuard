@@ -1,22 +1,20 @@
 using System.Net.Http.Json;
 using CryptoGuard.Application.Interfaces;
 using CryptoGuard.Domain.Abstractions;
-using CryptoGuard.Infrastructure.Configurations;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace CryptoGuard.Infrastructure.Providers;
 
 public class CoinGeckoPriceProvider(HttpClient httpClient, 
-    IOptions<CoinGeckoOptions> options) : IPriceProvider
+    IAssetRepository assetRepository, 
+    ILogger<CoinGeckoPriceProvider> logger) : IPriceProvider
 {
-    private readonly CoinGeckoOptions _options = options.Value;
-
     public async Task<Result<decimal>> GetPriceAsync(string coinId, string targetCurrency, CancellationToken ct)
     {
         try
         {
             var url = $"simple/price?ids={coinId.ToLower()}&vs_currencies={targetCurrency.ToLower()}";
-            // base address and timeout jsou nastaveny v DependencyInjection, takže zde pouze voláme endpoint s parametry
+            // ase address and timeout jsou nastaveny v DependencyInjection, takže zde pouze voláme endpoint s parametry
             var response = await httpClient.GetAsync(url, ct);
 
             if (!response.IsSuccessStatusCode)

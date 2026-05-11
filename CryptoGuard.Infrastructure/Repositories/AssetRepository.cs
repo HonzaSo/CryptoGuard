@@ -100,4 +100,18 @@ public class AssetRepository (ApplicationDbContext context) : IAssetRepository
 
         await context.SaveChangesAsync(ct);
     }
+    
+    public async Task<List<Asset>> GetAssetsAsync(CancellationToken ct)
+    {
+        var entities = await context.Assets.ToListAsync(ct);
+        
+        return entities.Select(assetEntity => new Asset(
+            assetEntity.Id,
+            assetEntity.Symbol,
+            assetEntity.Name,
+            assetEntity.Currency,
+            assetEntity.CurrentPrice,
+            assetEntity.LastUpdated
+        )).ToList();
+    }
 }
