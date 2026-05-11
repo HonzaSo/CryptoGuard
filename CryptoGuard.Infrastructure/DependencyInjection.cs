@@ -2,6 +2,8 @@ using CryptoGuard.Application.Interfaces;
 using CryptoGuard.Infrastructure.Configurations;
 using CryptoGuard.Infrastructure.Providers;
 using CryptoGuard.Infrastructure.Repositories;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,9 @@ public static class DependencyInjection
         
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(dbConfiguration.ConnectionString));
+        
+        services.AddHangfire(config => config.UsePostgreSqlStorage(dbConfiguration.ConnectionString));
+        services.AddHangfireServer();
         
         services.AddScoped<IAssetRepository, AssetRepository>();
         

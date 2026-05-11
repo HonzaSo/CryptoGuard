@@ -1,6 +1,7 @@
 using CryptoGuard.API.Middlewares;
 using CryptoGuard.Application;
 using CryptoGuard.Infrastructure;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,11 +20,14 @@ var app = builder.Build();
 app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
-app.MapControllers();
+app.UseHangfireServer();
+app.UseHangfireDashboard();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.MapControllers();
 
 app.Run();
