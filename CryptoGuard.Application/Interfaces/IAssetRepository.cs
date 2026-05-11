@@ -10,4 +10,5 @@ public interface IAssetRepository
     Task RemoveAssetAsync(Guid id, CancellationToken ct);
     Task UpdateCurrentPriceAsync(Guid id, decimal newPrice, CancellationToken ct);
     Task UpdateAssetAsync(Asset asset, CancellationToken ct);
+    Task<List<Asset>> GetAssetsAsync(CancellationToken ct);
 }
